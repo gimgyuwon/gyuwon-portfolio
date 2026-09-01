@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { TOOL_LIST } from "@/constants/toolList";
 import { PROJECT_DATA, ProjectType } from "@/constants/projectData";
 
 import SectionTitle from "@/components/ui/SectionTitle";
@@ -11,27 +10,62 @@ import ContactCard from "@/components/ui/ContactCard";
 import Modal from "@/components/ui/Modal";
 import ProjectDetailContent from "@/components/project/ProjectDetailContent";
 
+function LanguageIcon({ language }: { language: string }) {
+  const assetMap: Record<string, string> = {
+    JS: "/tool/js.png",
+    TS: "/tool/ts.svg",
+    Java: "/tool/java.png",
+    Python: "/tool/python.png",
+    Solidity: "/tool/solidity.png",
+  };
+
+  const src = assetMap[language] || "/tool/js.png";
+
+  return (
+    <div className="relative h-6 w-6">
+      <Image
+        src={src}
+        alt={`${language} icon`}
+        fill
+        className="object-contain"
+      />
+    </div>
+  );
+}
+
 export default function Home() {
   const [selectedProject, setSelectedProject] = useState<ProjectType | null>(
     null
   );
+
+  const LANGUAGE_LIST = [
+    { name: "Java" },
+    { name: "Python" },
+    { name: "Solidity" },
+    { name: "JS" },
+    { name: "TS" },
+  ];
 
   return (
     <div className="flex flex-col min-h-screen items-center font-sans bg-stone-50 text-stone-800 selection:bg-green-100 selection:text-green-900">
       <header className="fixed top-0 z-[999] w-full bg-white/90 backdrop-blur-md border-b border-stone-100 transition-all duration-300">
         <nav className="max-w-7xl mx-auto flex justify-center items-center py-4">
           <div className="flex gap-x-8 text-[15px] font-medium text-stone-500">
-            {["Introduction", "Tool", "Career", "Project", "Contact"].map(
-              (item) => (
-                <a
-                  key={item}
-                  href={`#${item.toLowerCase()}`}
-                  className="hover:text-green-800 hover:font-bold transition-all px-2 py-1"
-                >
-                  {item}
-                </a>
-              )
-            )}
+            {[
+              "Introduction",
+              "Language",
+              "Career",
+              "Project",
+              "Contact",
+            ].map((item) => (
+              <a
+                key={item}
+                href={`#${item.toLowerCase()}`}
+                className="hover:text-green-800 hover:font-bold transition-all px-2 py-1"
+              >
+                {item}
+              </a>
+            ))}
           </div>
         </nav>
       </header>
@@ -59,11 +93,11 @@ export default function Home() {
 
           <a
             className="group flex flex-row gap-x-2 items-center justify-center px-8 py-4 bg-stone-900 hover:bg-green-800 rounded-full text-white text-lg font-bold transition-all duration-300 shadow-lg hover:shadow-green-900/20 hover:-translate-y-1"
-            href="https://5wfk7fftkfmlcjl5.public.blob.vercel-storage.com/%EA%B9%80%EA%B7%9C%EC%9B%90_%EC%9D%B4%EB%A0%A5%EC%84%9C.pdf"
+            href="https://5wfk7fftkfmlcjl5.public.blob.vercel-storage.com/%EA%B9%80%EA%B7%9C%EC%9B%90_%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4_260901"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <span>이력서 다운로드</span>
+            <span>포트폴리오 다운로드</span>
             <span className="transition-transform duration-300">
               <Image
                 src="/download.svg"
@@ -75,32 +109,36 @@ export default function Home() {
           </a>
         </section>
 
-        {/* Tool Section */}
+        {/* Language Section */}
         <section
-          id="tool"
+          id="language"
           className="scroll-mt-32 flex flex-col gap-y-12 items-center"
         >
-          <SectionTitle title="Skills & Tools" />
+          <SectionTitle title="Language" />
 
-          <div className="flex flex-wrap justify-center gap-5 max-w-3xl">
-            {TOOL_LIST.map((tool) => (
-              <div
-                key={tool.label}
-                className="relative group flex flex-col items-center justify-center w-[85px] h-[85px] p-5 bg-white rounded-2xl shadow-sm border border-stone-100 hover:border-green-600 hover:shadow-md transition-all duration-300"
-              >
-                <div className="relative w-full h-full">
-                  <Image
-                    src={tool.src}
-                    alt={tool.label}
-                    fill
-                    className="object-contain"
-                  />
+          <div className="flex flex-col items-center gap-4">
+            <div className="flex flex-wrap justify-center gap-4 max-w-3xl">
+              {LANGUAGE_LIST.slice(0, 3).map((language) => (
+                <div
+                  key={language.name}
+                  className="group flex items-center gap-2 justify-center min-w-[108px] px-3 py-2 rounded-xl border border-stone-200 bg-white text-sm font-semibold text-stone-700 transition-all duration-200 hover:border-green-200 hover:bg-green-50/50 hover:text-green-800"
+                >
+                  <LanguageIcon language={language.name} />
+                  <span>{language.name}</span>
                 </div>
-                <span className="absolute -bottom-10 opacity-0 group-hover:opacity-100 transition-opacity bg-stone-800 text-white text-xs font-semibold px-3 py-1.5 rounded-md whitespace-nowrap z-10 tracking-tight">
-                  {tool.label}
-                </span>
-              </div>
-            ))}
+              ))}
+            </div>
+            <div className="flex flex-wrap justify-center gap-4 max-w-3xl">
+              {LANGUAGE_LIST.slice(3).map((language) => (
+                <div
+                  key={language.name}
+                  className="group flex items-center gap-2 justify-center min-w-[108px] px-3 py-2 rounded-xl border border-stone-200 bg-white text-sm font-semibold text-stone-700 transition-all duration-200 hover:border-green-200 hover:bg-green-50/50 hover:text-green-800"
+                >
+                  <LanguageIcon language={language.name} />
+                  <span>{language.name}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 
@@ -113,14 +151,98 @@ export default function Home() {
               <div className="flex flex-col md:flex-row md:justify-between md:items-baseline mb-5">
                 <div>
                   <h3 className="text-2xl font-bold text-stone-900 tracking-tight">
-                    NGL Transportation
+                    PwC Consulting
                   </h3>
                   <p className="text-green-800 font-bold text-lg mt-1">
-                    Software Engineer
+                    Research Assistant
                   </p>
                 </div>
                 <span className="text-sm text-stone-500 font-medium mt-2 md:mt-0 bg-stone-100 px-3 py-1 rounded-full">
-                  2024.08 ~ 2025.08
+                  2026.04 ~ 2026.06
+                </span>
+              </div>
+              <p className="text-stone-500 mb-6 font-medium border-b border-stone-100 pb-4">
+                서울 · 금융기관 B2B 마케팅 자동화 프로젝트 RA
+              </p>
+              <ul className="list-disc list-outside ml-4 space-y-3 text-stone-700 leading-relaxed">
+                <li>
+                  <strong className="text-stone-900 font-semibold">
+                    마케팅 데이터 분석 및 SQL 작성:
+                  </strong>{" "}
+                  B2B 마케팅 자동화 타겟팅을 위한 데이터 분석 및 대용량 금융 고객 처리
+                  ANSI SQL 작성
+                </li>
+                <li>
+                  <strong className="text-stone-900 font-semibold">
+                    마트 구축을 위한 ETL 로직 설계:
+                  </strong>{" "}
+                  CRM 데이터 마트 목적에 맞춘 윈도우 함수 기반 추출·변환 가공 로직 설계
+                  및 파이프라인 최적화 지원
+                </li>
+                <li>
+                  <strong className="text-stone-900 font-semibold">
+                    쿼리 무결성 및 정합성 검증:
+                  </strong>{" "}
+                  추출 쿼리 무결성 검증 및 원천-마트 적재 데이터 간 정합성 비교 분석을
+                  통한 정확도 확보
+                </li>
+              </ul>
+            </Card>
+
+            <Card>
+              <div className="flex flex-col md:flex-row md:justify-between md:items-baseline mb-5">
+                <div>
+                  <h3 className="text-2xl font-bold text-stone-900 tracking-tight">
+                    한영회계법인
+                  </h3>
+                  <p className="text-green-800 font-bold text-lg mt-1">
+                    Data Analytics Engineer Intern
+                  </p>
+                </div>
+                <span className="text-sm text-stone-500 font-medium mt-2 md:mt-0 bg-stone-100 px-3 py-1 rounded-full">
+                  2026.01 ~ 2026.03
+                </span>
+              </div>
+              <p className="text-stone-500 mb-6 font-medium border-b border-stone-100 pb-4">
+                서울 · 회계법인 데이터 분석 및 감사 자동화 지원 팀
+              </p>
+              <ul className="list-disc list-outside ml-4 space-y-3 text-stone-700 leading-relaxed">
+                <li>
+                  <strong className="text-stone-900 font-semibold">
+                    대용량 재무 데이터 구조화:
+                  </strong>{" "}
+                  50만 건 이상의 대규모 재무 데이터를 감사 목적에 맞게 구조화하고
+                  효율적인 감사 절차 지원
+                </li>
+                <li>
+                  <strong className="text-stone-900 font-semibold">
+                    이상치 분석 및 데이터 정제:
+                  </strong>{" "}
+                  MS SQL을 활용해 주말·심야 입력, 승인자 불일치 등 비경상 패턴 추출 및
+                  데이터 정제·가공
+                </li>
+                <li>
+                  <strong className="text-stone-900 font-semibold">
+                    공시 데이터 표준화 및 검증:
+                  </strong>{" "}
+                  Excel 기반 재무 정보 검증 및 정확한 태깅 작업을 통한 공시 데이터
+                  표준화 지원
+                </li>
+              </ul>
+            </Card>
+
+            <Card>
+              <div className="flex flex-col md:flex-row md:justify-between md:items-baseline mb-5">
+                <div>
+                  <h3 className="text-2xl font-bold text-stone-900 tracking-tight">
+                    NGL Transportation
+                  </h3>
+                  <p className="text-green-800 font-bold text-lg mt-1">
+                    Software Engineer Intern
+                  </p>
+                </div>
+                <span className="text-sm text-stone-500 font-medium mt-2 md:mt-0 bg-stone-100 px-3 py-1 rounded-full">
+                  2024.06 ~ 2025.08
                 </span>
               </div>
               <p className="text-stone-500 mb-6 font-medium border-b border-stone-100 pb-4">
@@ -129,22 +251,24 @@ export default function Home() {
               <ul className="list-disc list-outside ml-4 space-y-3 text-stone-700 leading-relaxed">
                 <li>
                   <strong className="text-stone-900 font-semibold">
-                    TMS & YMS 개발:
+                    물류 · 야드 관리 시스템 개발:
                   </strong>{" "}
-                  운송 관리 시스템(TMS) 및 야드 관리 시스템(YMS) 핵심 로직 개발
-                  및 유지보수
+                  AG-Grid 기반 Excel Export, EDI 페이지 및 문서 드래그 & 드롭 업로드 기능
+                  구현 등 프론트엔드 개발
                 </li>
                 <li>
                   <strong className="text-stone-900 font-semibold">
-                    공식 웹사이트 운영:
+                    화물 기사용 앱 데이터 분석:
                   </strong>{" "}
-                  기업 홈페이지(ngltrans.com) 리뉴얼 개발 및 메타 데이터 최적화
+                  PostgreSQL을 활용한 다각도 데이터 추출 및 인사이트 도출을 통해 4주간
+                  활성 사용률 15.14% → 84.62% 향상
                 </li>
                 <li>
                   <strong className="text-stone-900 font-semibold">
-                    DRIVER APP 데이터 분석:
+                    회사 사이트 리팩토링:
                   </strong>{" "}
-                  Driver App 사용자 로그 데이터 수집 및 전처리
+                  기존 HTML 코드 리팩토링, Contact 페이지 Email JS 도입 및 반응형 웹
+                  디자인 구현
                 </li>
               </ul>
             </Card>
