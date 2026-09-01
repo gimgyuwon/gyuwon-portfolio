@@ -103,11 +103,17 @@ export default function ProjectDetailContent({
             스크린샷
           </h3>
 
-          <div className="grid grid-cols-1 gap-6">
+          <div
+            className={`grid gap-4 md:gap-6 ${
+              project.id === "mug-jjang-token" || project.id === "cheap-bob"
+                ? "grid-cols-1"
+                : "grid-cols-1 md:grid-cols-2"
+            }`}
+          >
             {project.images.map((imgSrc, index) => (
               <div
                 key={index}
-                className="relative w-full rounded-xl overflow-hidden border border-stone-100"
+                className="relative w-full rounded-xl overflow-hidden border border-stone-100 bg-stone-50"
               >
                 <Image
                   src={imgSrc}
